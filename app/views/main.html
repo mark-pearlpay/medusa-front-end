@@ -61,13 +61,13 @@
     </tr>
   </thead>
   <tbody>
-    <tr ng-repeat="wallet in wallets">
-      <th scope="row">{{wallet.id}}</th>
+    <tr name="walletRow" ng-repeat="wallet in wallets">
+      <th name="id" scope="row">{{wallet.id}}</th>
       <td name="firstName">{{wallet.firstName}}</td>
-      <td>{{wallet.lastName}}</td>
-      <td>{{wallet.email}}</td>
-      <td>{{wallet.birthday}}</td>
-      <td>Php {{wallet.balance}}</td>
+      <td name="lastName">{{wallet.lastName}}</td>
+      <td name="email">{{wallet.email}}</td>
+      <td name="birthday">{{wallet.birthday}}</td>
+      <td name="balance">Php {{wallet.balance}}</td>
     </tr>
   </tbody>
 </table>

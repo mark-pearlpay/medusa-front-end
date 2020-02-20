@@ -13,25 +13,32 @@ let page;
 
 
 Given('I have valid wallet details',{timeout: 60 * 1000}, async () => {
-  // Do nothing
   payload = {
-	firstName: uuid.v4(),
-	lastName: 'Last Name from puppeteer',
-	email: 'test@test.com',
-	birthday: '2020-03-03',
-	balance: '1000'
+  	firstName: uuid.v4(),
+  	lastName: 'Last Name from puppeteer',
+  	email: 'test@test.com',
+  	birthday: '2020-03-03',
+  	balance: '1000'
   }
 });
 
-When('I create a new wallet',{timeout: 60 * 1000}, async () => {
+Given('I have existing wallets',{timeout: 60 * 1000}, async () => {
+  // Do nothing
+});
+
+When('I go to main page',{timeout: 60 * 1000}, async () => {
   browser = await puppeteer.launch({
-  	headless: false,
-  	defaultViewport: null,
-  	args: ['--start-maximized']
+    headless: false,
+    defaultViewport: null,
+    args: ['--start-maximized']
   });
   page = await browser.newPage();
   await page.goto(baseUrl);
 
+  await page.waitFor(2000);
+});
+
+When('I create a new wallet',{timeout: 60 * 1000}, async () => {
   await page.type('#firstName', payload.firstName, {delay: 100});
   await page.type('#lastName', payload.lastName, {delay: 100});
   await page.type('#email', payload.email, {delay: 100});
@@ -44,6 +51,7 @@ When('I create a new wallet',{timeout: 60 * 1000}, async () => {
 });
 
 Then('wallet should exist in list',{timeout: 60 * 1000} , async () => {
+  await page.waitForSelector('td[name="firstName"]')
   let firstNames = [];
   let elements = await page.$$('td[name="firstName"]')
 
@@ -53,6 +61,21 @@ Then('wallet should exist in list',{timeout: 60 * 1000} , async () => {
   }
   
   assert.include(firstNames, payload.firstName);
+
+  await browser.close();
+});
+
+Then('wallet list should exist',{timeout: 60 * 1000} , async () => {
+  const listExists = await page.$('table[name="walletsTable"]') !== null;
+
+  assert.isOk(listExists);
+});
+
+Then('wallet list should not be empty',{timeout: 60 * 1000} , async () => {
+  await page.waitForSelector('tr[name="walletRow"]');
+  let elements = await page.$$('tr[name="walletRow"]');
+
+  assert.isOk(elements.length > 0);
 
   await browser.close();
 });
