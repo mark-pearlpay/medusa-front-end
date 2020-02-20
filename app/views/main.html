@@ -1,23 +1,73 @@
-<div class="jumbotron">
-  <h1>'Allo, 'Allo!</h1>
-  <p class="lead">
-    <img src="images/yeoman.png" alt="I'm Yeoman"><br>
-    Always a pleasure scaffolding your apps.
-  </p>
-  <p><a class="btn btn-lg btn-success" ng-href="#/">Splendid!<span class="glyphicon glyphicon-ok"></span></a></p>
-</div>
+<form ng-submit="saveWallet()">
+  <div class="form-group row">
+    <label for="firstName" class="col-sm-2 col-form-label">First Name</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="firstName" ng-model="firstName">
+    </div>
+  </div>
 
-<div class="row marketing">
-  <h4>HTML5 Boilerplate</h4>
-  <p>
-    HTML5 Boilerplate is a professional front-end template for building fast, robust, and adaptable web apps or sites.
-  </p>
+  <div class="form-group row">
+    <label for="lastName" class="col-sm-2 col-form-label">Last Name</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="lastName" ng-model="lastName">
+    </div>
+  </div>
 
-  <h4>Angular</h4>
-  <p>
-    AngularJS is a toolset for building the framework most suited to your application development.
-  </p>
+  <div class="form-group row">
+    <label for="email" class="col-sm-2 col-form-label">Email</label>
+    <div class="col-sm-10">
+      <input type="email" class="form-control" id="email" ng-model="email">
+    </div>
+  </div>
 
-  <h4>Karma</h4>
-  <p>Spectacular Test Runner for JavaScript.</p>
-</div>
+  <div class="form-group row">
+    <label for="birthday" class="col-sm-2 col-form-label">Birthday</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="birthday" ng-model="birthday">
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="balance" class="col-sm-2 col-form-label">Initial Balance</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="balance" ng-model="balance">
+    </div>
+  </div>
+
+
+  <div class="form-group row">
+    <div class="col-sm-10">
+      
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <div class="col-sm-10">
+      <button type="cancel" class="btn btn-secondary">Cancel</button>
+      <button id="submit-save" type="submit" class="btn btn-primary">Submit</button>
+    </div>
+  </div>
+</form>
+
+<table class="table" name="walletsTable">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">First Name</th>
+      <th scope="col">Last Name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Birthday</th>
+      <th scope="col">Balance</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="wallet in wallets">
+      <th scope="row">{{wallet.id}}</th>
+      <td name="firstName">{{wallet.firstName}}</td>
+      <td>{{wallet.lastName}}</td>
+      <td>{{wallet.email}}</td>
+      <td>{{wallet.birthday}}</td>
+      <td>Php {{wallet.balance}}</td>
+    </tr>
+  </tbody>
+</table>
