@@ -58,7 +58,7 @@ angular.module('medusaFrontEndApp')
 	            // Do Nothing
 	        }, 2000 );
 
-        	resolve(existingList);
+        	resolve(wallet);
     	});
     };
   }]);

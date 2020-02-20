@@ -28,7 +28,7 @@ angular.module('medusaFrontEndApp')
 	    	};
 
 	    	WalletService.save(wallet).then((data)=>{
-		    	$scope.wallets = data;
+		    	$scope.wallets.push(data);
 		    });
 	    };
   	}
