@@ -39,7 +39,7 @@ angular.module('medusaFrontEndApp')
         	// mock fetch time from backend
         	$timeout( function(){
 	            // Do nothing
-	        }, 2000 );
+	        }, 1000 );
 
         	resolve(existingList);
     	});
@@ -50,13 +50,23 @@ angular.module('medusaFrontEndApp')
     	let existingList = this.mockData;
 
     	wallet.id = Math.floor(Math.random()*10000) + 1;
-    	existingList.push(wallet);
 
         return new Promise((resolve, reject) => {
         	// mock fetch time from backend
         	$timeout( function(){
 	            // Do Nothing
-	        }, 2000 );
+	        }, 1000 );
+
+        	resolve(wallet);
+    	});
+    };
+
+    this.delete = (wallet) => {
+    	return new Promise((resolve, reject) => {
+        	// mock fetch time from backend
+        	$timeout( function(){
+	            // Do Nothing
+	        }, 1000 );
 
         	resolve(wallet);
     	});

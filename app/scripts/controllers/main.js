@@ -31,5 +31,13 @@ angular.module('medusaFrontEndApp')
 		    	$scope.wallets.push(data);
 		    });
 	    };
+
+	    $scope.deleteWallet = (wallet) => {
+	    	WalletService.delete(wallet).then((data)=>{
+	    		let walletIndex = (i) => i == data.id;
+	    		const removeIndex = $scope.wallets.findIndex(walletIndex);
+		    	$scope.wallets.splice(removeIndex, 1);
+		    });
+	    };
   	}
 ]);

@@ -68,6 +68,16 @@
       <td name="email">{{wallet.email}}</td>
       <td name="birthday">{{wallet.birthday}}</td>
       <td name="balance">Php {{wallet.balance}}</td>
+      <td name="removeWallet">
+        <button class="btn btn-danger" id="delete-{{wallet.id}}" ng-click="deleteWallet(wallet)">
+          <i class="glyphicon glyphicon-remove"></i>
+        </button>
+      </td>
+      <td name="transactionHistory">
+        <button class="btn btn-info">
+          <i class="glyphicon glyphicon-list-alt"></i>
+        </button>
+      </td>
     </tr>
   </tbody>
 </table>
