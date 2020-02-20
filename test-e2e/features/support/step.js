@@ -43,7 +43,7 @@ When('I create a new wallet',{timeout: 60 * 1000}, async () => {
   await page.waitFor(2000);
 });
 
-Then('I should be successful',{timeout: 60 * 1000} , async () => {
+Then('wallet should exist in list',{timeout: 60 * 1000} , async () => {
   let firstNames = [];
   let elements = await page.$$('td[name="firstName"]')
 
