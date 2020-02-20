@@ -1,5 +1,6 @@
 // TODO: Break me into step files
 // TODO: Implement Page Objects
+// TODO: Major Refactor!
 const { Given, When, Then } = require("cucumber");
 const { expect, assert } = require("chai");
 const puppeteer = require('puppeteer');
@@ -8,6 +9,7 @@ const uuid = require("uuid");
 
 const baseUrl = 'http://localhost:9000/#!/';
 let payload = {};
+let elementInTestId;
 let browser;
 let page;
 
@@ -22,11 +24,25 @@ Given('I have valid wallet details',{timeout: 60 * 1000}, async () => {
   }
 });
 
+Given('I have an existing wallet',{timeout: 60 * 1000}, async () => {
+  await page.waitForSelector('td[name="firstName"]')
+  let firstNames = [];
+  let elements = await page.$$('td[name="firstName"]')
+
+  for (const element of elements) {
+    const text = await (await element.getProperty('textContent')).jsonValue();
+    firstNames.push(text);
+  }
+  
+  assert.include(firstNames, payload.firstName);
+});
+
 Given('I have existing wallets',{timeout: 60 * 1000}, async () => {
   // Do nothing
 });
 
-When('I go to main page',{timeout: 60 * 1000}, async () => {
+Given('I go to main page',{timeout: 60 * 1000}, async () => {
+  // TODO move me to Page Objects
   browser = await puppeteer.launch({
     headless: false,
     defaultViewport: null,
@@ -61,6 +77,44 @@ Then('wallet should exist in list',{timeout: 60 * 1000} , async () => {
   }
   
   assert.include(firstNames, payload.firstName);
+
+  await browser.close();
+});
+
+When('I delete an existing wallet',{timeout: 60 * 1000}, async () => {
+  let firstNames = [];
+  const firstNameSelector = 'td[name="firstName"]';
+  await page.waitForSelector(firstNameSelector)
+  let elements = await page.$$(firstNameSelector)
+  for (const element of elements) {
+    const text = await (await element.getProperty('textContent')).jsonValue();
+    firstNames.push(text);
+  }
+  
+  const elementIndex = firstNames.indexOf(payload.firstName);
+  let ids = await page.$$('th[name="id"]');
+  const id = await (await ids[elementIndex].getProperty('textContent')).jsonValue();
+
+  const selector = `#delete-${id}`
+  
+  await page.waitForSelector(selector);
+  await page.click(selector);
+
+  await page.waitFor(2000);
+});
+
+Then('wallet should not exist in list',{timeout: 60 * 1000} , async () => {
+  const firstNameSelector = 'td[name="firstName"]';
+  await page.waitForSelector(firstNameSelector)
+  let firstNames = [];
+  let elements = await page.$$(firstNameSelector)
+
+  for (const element of elements) {
+    const text = await (await element.getProperty('textContent')).jsonValue();
+    firstNames.push(text);
+  }
+  
+  assert.notInclude(firstNames, payload.firstName);
 
   await browser.close();
 });

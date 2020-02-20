@@ -9,7 +9,14 @@ Scenario: Create wallet
     Then wallet should exist in list
 
 # Scenario: Update wallet
-# Scenario: Delete wallet
+
+Scenario: Delete wallet
+	Given I have valid wallet details
+	And I go to main page
+    And I create a new wallet
+    When I delete an existing wallet
+    Then wallet should not exist in list
+
 # Scenario: Get wallet
 
 Scenario: List wallets
@@ -19,4 +26,5 @@ Scenario: List wallets
     And wallet list should not be empty
 
 # Scenario: Transfer funds between wallets
+
 # Scenario: List transaction history
