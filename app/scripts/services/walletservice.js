@@ -8,7 +8,7 @@
  * Service in the medusaFrontEndApp.
  */
 angular.module('medusaFrontEndApp')
-  .service('WalletService', ['$timeout', function ($timeout) {
+  .service('WalletService', ['$timeout', '$http', function ($timeout, $http) {
   	this.mockData = [{
   		id: Math.floor(Math.random()*10000) + 1,
 		firstName: 'FN1',
@@ -33,44 +33,33 @@ angular.module('medusaFrontEndApp')
 	  }];
 
     this.list = () => {
-    	let existingList = this.mockData;
-
-        return new Promise((resolve, reject) => {
-        	// mock fetch time from backend
-        	$timeout( function(){
-	            // Do nothing
-	        }, 1000 );
-
-        	resolve(existingList);
-    	});
+    	return $http.get('http://localhost:8080/wallets')
+    		.then((result) => {
+    			return result;
+    		}, (err) => {
+    			return err;
+    		});
     };
 
     // TODO: implement save or update
     this.save = (wallet) => {
-    	let existingList = this.mockData;
-
-    	if (!wallet.id) {
-    		wallet.id = Math.floor(Math.random()*10000) + 1;
-    	}
-
-        return new Promise((resolve, reject) => {
-        	// mock fetch time from backend
-        	$timeout( function(){
-	            // Do Nothing
-	        }, 1000 );
-
-        	resolve(wallet);
-    	});
+    	return $http.post('http://localhost:8080/wallets', wallet)
+    		.then((result) => {
+    			return result;
+    		}, (err) => {
+    			return err;
+    		});
     };
 
     this.delete = (wallet) => {
-    	return new Promise((resolve, reject) => {
-        	// mock fetch time from backend
-        	$timeout( function(){
-	            // Do Nothing
-	        }, 1000 );
-
-        	resolve(wallet);
-    	});
+    	return $http.delete('http://localhost:8080/wallets', {
+    			data: wallet,
+    			headers: {'Content-Type': 'application/json;charset=utf-8'}
+    		})
+    		.then((result) => {
+    			return result;
+    		}, (err) => {
+    			return err;
+    		});
     };
   }]);

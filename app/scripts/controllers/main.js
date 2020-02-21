@@ -15,12 +15,12 @@ angular.module('medusaFrontEndApp')
 	    $scope.wallets = [];
 
 	    // load list of wallets
-	    WalletService.list().then((data)=>{
-	    	$scope.wallets = data;
+	    WalletService.list().then((result)=>{
+	    	$scope.wallets = result.data;
 	    });
 
 	    $scope.saveWallet = () => {
-	    	const wallet = {
+	    	const payload = {
 	    		firstName: $scope.firstName,
 				lastName: $scope.lastName,
 				email: $scope.email,
@@ -28,13 +28,15 @@ angular.module('medusaFrontEndApp')
 				balance: $scope.balance
 	    	};
 
-	    	WalletService.save(wallet).then((data)=>{
-		    	$scope.wallets.push(data);
+	    	WalletService.save(payload).then((result)=>{
+		    	$scope.wallets.push(result.data);
 		    });
 	    };
 
 	    $scope.deleteWallet = (wallet) => {
-	    	WalletService.delete(wallet).then((data)=>{
+	    	WalletService.delete(wallet).then((result)=>{
+	    		console.log(result)
+	    		const data = result.data;
 	    		let walletIndex = (i) => i == data.id;
 	    		const removeIndex = $scope.wallets.findIndex(walletIndex);
 		    	$scope.wallets.splice(removeIndex, 1);
@@ -50,8 +52,8 @@ angular.module('medusaFrontEndApp')
 	    	const intBalance = parseInt(wallet.balance) + parseInt(topUpBalance);
     		wallet.balance = intBalance.toString();
 
-	    	WalletService.save(wallet).then((data)=>{
-	    		wallet = data;
+	    	WalletService.save(wallet).then((result)=>{
+	    		wallet = result.data;
 		    });
 	    };
 
