@@ -9,15 +9,18 @@
  */
 angular.module('medusaFrontEndApp')
   .controller('MainCtrl', [
-  	'$scope', 'WalletService', '$timeout',
-  	function ($scope, WalletService, $timeout) {
+  	'$scope', 'WalletService', '$timeout', 'TransactionType',
+  	function ($scope, WalletService, $timeout, TransactionType) {
   		$scope.selectedTopUpButtons = {};
 	    $scope.wallets = [];
 
 	    // load list of wallets
 	    WalletService.list().then((result)=>{
+	    	console.log(result.data)
 	    	$scope.wallets = result.data;
 	    });
+
+	   	console.log(TransactionType)
 
 	    $scope.saveWallet = () => {
 	    	const payload = {
@@ -27,6 +30,10 @@ angular.module('medusaFrontEndApp')
 				birthday: $scope.birthday,
 				balance: $scope.balance
 	    	};
+
+	    	if(!payload.id) {
+	    		payload.transactionType = TransactionType.WALLET_CREATE;
+	    	}
 
 	    	WalletService.save(payload).then((result)=>{
 		    	$scope.wallets.push(result.data);
@@ -51,6 +58,8 @@ angular.module('medusaFrontEndApp')
 
 	    	const intBalance = parseInt(wallet.balance) + parseInt(topUpBalance);
     		wallet.balance = intBalance.toString();
+
+    		wallet.transactionType = TransactionType.TOP_UP;
 
 	    	WalletService.save(wallet).then((result)=>{
 	    		wallet = result.data;

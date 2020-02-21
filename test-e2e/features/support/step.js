@@ -56,13 +56,13 @@ Given('I go to main page',{timeout: 60 * 1000}, async () => {
 });
 
 When('I create a new wallet',{timeout: 60 * 1000}, async () => {
-  await page.type('#firstName', payload.firstName, {delay: 100});
-  await page.type('#lastName', payload.lastName, {delay: 100});
-  await page.type('#email', payload.email, {delay: 100});
-  await page.type('#birthday', payload.birthday, {delay: 100});
-  await page.type('#balance', payload.balance, {delay: 100});
+  await page.type('#firstName', payload.firstName, {delay: 20});
+  await page.type('#lastName', payload.lastName, {delay: 20});
+  await page.type('#email', payload.email, {delay: 20});
+  await page.type('#birthday', payload.birthday, {delay: 20});
+  await page.type('#balance', payload.balance, {delay: 20});
 
-  await page.click('#submit-save', {delay: 100});
+  await page.click('#submit-save', {delay: 20});
 
   await page.waitFor(2000);
 });
@@ -125,7 +125,7 @@ When('I top up an existing wallet',{timeout: 60 * 1000}, async () => {
   await page.click(topUpButtonSelector);
 
   await page.waitForSelector(topUpInputSelector);
-  await page.type(topUpInputSelector, topUpValue, {delay: 100});
+  await page.type(topUpInputSelector, topUpValue, {delay: 20});
 
   await page.keyboard.press('Enter');
 

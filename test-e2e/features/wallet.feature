@@ -30,6 +30,6 @@ Scenario: List wallets
     Then wallet list should exist
     And wallet list should not be empty
 
+# Scenario: List transaction history - Get
 # Scenario: Transfer funds between wallets
-
-# Scenario: List transaction history
+# Scenario: Withdraw funds between wallets
