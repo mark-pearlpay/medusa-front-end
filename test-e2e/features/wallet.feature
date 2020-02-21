@@ -10,14 +10,19 @@ Scenario: Create wallet
 
 # Scenario: Update wallet
 
+Scenario: Top up wallet
+	Given I have valid wallet details
+	And I go to main page
+    And I create a new wallet
+    When I top up an existing wallet
+    Then I should have a correct balance value
+
 Scenario: Delete wallet
 	Given I have valid wallet details
 	And I go to main page
     And I create a new wallet
     When I delete an existing wallet
     Then wallet should not exist in list
-
-# Scenario: Get wallet
 
 Scenario: List wallets
 	Given I have existing wallets

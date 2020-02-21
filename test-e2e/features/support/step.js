@@ -12,6 +12,7 @@ let payload = {};
 let elementInTestId;
 let browser;
 let page;
+const topUpValue = '1000';
 
 
 Given('I have valid wallet details',{timeout: 60 * 1000}, async () => {
@@ -101,6 +102,55 @@ When('I delete an existing wallet',{timeout: 60 * 1000}, async () => {
   await page.click(selector);
 
   await page.waitFor(2000);
+});
+
+When('I top up an existing wallet',{timeout: 60 * 1000}, async () => {
+  let firstNames = [];
+  const firstNameSelector = 'td[name="firstName"]';
+  await page.waitForSelector(firstNameSelector)
+  let elements = await page.$$(firstNameSelector)
+  for (const element of elements) {
+    const text = await (await element.getProperty('textContent')).jsonValue();
+    firstNames.push(text);
+  }
+  
+  const elementIndex = firstNames.indexOf(payload.firstName);
+  let ids = await page.$$('th[name="id"]');
+  const id = await (await ids[elementIndex].getProperty('textContent')).jsonValue();
+
+  const topUpButtonSelector = `#top-up-button-${id}`
+  const topUpInputSelector = `#top-up-input-${id}`
+  
+  await page.waitForSelector(topUpButtonSelector);
+  await page.click(topUpButtonSelector);
+
+  await page.waitForSelector(topUpInputSelector);
+  await page.type(topUpInputSelector, topUpValue, {delay: 100});
+
+  await page.keyboard.press('Enter');
+
+  await page.waitFor(2000);
+});
+
+Then('I should have a correct balance value',{timeout: 60 * 1000} , async () => {
+  // TODO get balance and check value
+  let firstNames = [];
+  const firstNameSelector = 'td[name="firstName"]';
+  await page.waitForSelector(firstNameSelector)
+  let elements = await page.$$(firstNameSelector)
+  for (const element of elements) {
+    const text = await (await element.getProperty('textContent')).jsonValue();
+    firstNames.push(text);
+  }
+  
+  const elementIndex = firstNames.indexOf(payload.firstName);
+  let balances = await page.$$('td[name="balance"]');
+  const balance = await (await balances[elementIndex].getProperty('textContent')).jsonValue();
+
+  const expectedBalanceInt = parseInt(payload.balance) + parseInt(topUpValue)
+  assert.include(balance, expectedBalanceInt.toString())
+
+  await browser.close();
 });
 
 Then('wallet should not exist in list',{timeout: 60 * 1000} , async () => {
