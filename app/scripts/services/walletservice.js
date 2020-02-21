@@ -49,7 +49,9 @@ angular.module('medusaFrontEndApp')
     this.save = (wallet) => {
     	let existingList = this.mockData;
 
-    	wallet.id = Math.floor(Math.random()*10000) + 1;
+    	if (!wallet.id) {
+    		wallet.id = Math.floor(Math.random()*10000) + 1;
+    	}
 
         return new Promise((resolve, reject) => {
         	// mock fetch time from backend
