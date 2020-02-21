@@ -58,10 +58,13 @@
       <th scope="col">Email</th>
       <th scope="col">Birthday</th>
       <th scope="col">Balance</th>
+      <th scope="col"></th>
+      <th scope="col"></th>
+      <th scope="col"></th>
     </tr>
   </thead>
   <tbody>
-    <tr name="walletRow" ng-repeat="wallet in wallets">
+    <tr name="walletRow" ng-repeat="wallet in wallets track by $index">
       <th name="id" scope="row">{{wallet.id}}</th>
       <td name="firstName">{{wallet.firstName}}</td>
       <td name="lastName">{{wallet.lastName}}</td>
@@ -69,7 +72,8 @@
       <td name="birthday">{{wallet.birthday}}</td>
       <td name="balance">Php {{wallet.balance}}</td>
       <td name="removeWallet">
-        <button class="btn btn-danger" id="delete-{{wallet.id}}" ng-click="deleteWallet(wallet)">
+        <button class="btn btn-danger" id="delete-{{wallet.id}}" 
+         ng-click="deleteWallet(wallet)">
           <i class="glyphicon glyphicon-remove"></i>
         </button>
       </td>
@@ -77,6 +81,19 @@
         <button class="btn btn-info">
           <i class="glyphicon glyphicon-list-alt"></i>
         </button>
+      </td>
+      <td name="transactionHistory">
+        <button class="btn btn-success" id="top-up-button-{{wallet.id}}"
+          ng-show="showTopUpButton($index)"
+          ng-click="toggleTopUpButton($index)">
+          <i class="glyphicon glyphicon-plus"></i>
+        </button>
+        <input type="text" id="top-up-input-{{wallet.id}}"
+          style="min-width: 100px" 
+          class="form-control"
+          ng-hide="showTopUpButton($index)"
+          ng-enter="topUp(wallet, $index)"
+          ng-model="wallet.topUpBalance">
       </td>
     </tr>
   </tbody>

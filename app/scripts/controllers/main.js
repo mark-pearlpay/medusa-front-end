@@ -9,8 +9,9 @@
  */
 angular.module('medusaFrontEndApp')
   .controller('MainCtrl', [
-  	'$scope', 'WalletService', 
-  	function ($scope, WalletService) {
+  	'$scope', 'WalletService', '$timeout',
+  	function ($scope, WalletService, $timeout) {
+  		$scope.selectedTopUpButtons = {};
 	    $scope.wallets = [];
 
 	    // load list of wallets
@@ -39,5 +40,34 @@ angular.module('medusaFrontEndApp')
 		    	$scope.wallets.splice(removeIndex, 1);
 		    });
 	    };
+
+	    $scope.topUp = (wallet, index) => {
+	    	$scope.toggleTopUpButton(index);
+
+	    	const topUpBalance = wallet.topUpBalance;
+	    	delete wallet.topUpBalance
+
+	    	const intBalance = parseInt(wallet.balance) + parseInt(topUpBalance);
+    		wallet.balance = intBalance.toString();
+
+	    	WalletService.save(wallet).then((data)=>{
+	    		wallet = data;
+		    });
+	    };
+
+	    $scope.toggleTopUpButton = (index) => {
+	    	if(index in $scope.selectedTopUpButtons)
+	    		delete $scope.selectedTopUpButtons[index];
+	    	else
+	    		$scope.selectedTopUpButtons[index] = 1;
+	    }
+
+	    $scope.showTopUpButton = function(index) {
+           return !$scope.selectedTopUpButtons[index];
+   		}
+
+   		$scope.test = function() {
+			alert('The form has been test !');
+		};
   	}
 ]);
